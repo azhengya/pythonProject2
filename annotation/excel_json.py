@@ -1,44 +1,63 @@
-#coding=gbk
+# -*- coding:utf-8 -*-
 import xlrd
-
+# "authors": [
+#
+# { "firstName": "Isaac", "lastName": "Asimov", "genre": "science fiction" },
+#
+# { "firstName": "Tad", "lastName": "Williams", "genre": "fantasy" },
+#
+# { "firstName": "Frank", "lastName": "Peretti", "genre": "christian fiction" }
+#
+# ],
 def read_xls(filename):
+    # æ‰“å¼€Excelæ–‡ä»¶,è¯»å–ç¬¬ä¸€ä¸ªå·¥ä½œè¡¨
+    data = xlrd.open_workbook(filename).sheets()[0]
+    # data.nrowsç»Ÿè®¡è¡Œæ•°ï¼Œncolsä¸ºåˆ—æ•°
+    cols = data.ncols
+    # ä¿å­˜ç»“æœ
+    result = []
+    #for i in range(cols):
+    for j in data.col_values(1):
+        print(data.col_values(1)[1])
+        con = 0
+        if j != '':
+            con +=1
+        print(con)
 
-    # ´ò¿ªExcelÎÄ¼ş
-    data = xlrd.open_workbook(filename)
+    #[print(len([x for x in w if x != ''])) for w in data.row(1)]
+    # l = len(filter(None, data.row(1)))
+    # print(l)
+    for i in range(cols):
+        record = {}
+        record[str(int(data.col_values(i)[0]))]= data.col_values(i)[1:]
+        result.append(record)
+    return result
+            # record[keys[0]] = cols.value[0]
+            # keys = data.col_values(i)  # ä¿å­˜å…³é”®å­—
+        # else:
+        #     record = {}
+        #     record[keys[0]] = data.col_values(0)
+        #     # å°†Excelæ–‡ä»¶çš„æ•°æ®å­˜å…¥å­—å…¸ä¸­
+        #     cnt = 1
+        #     for item in data.col_values(i):
+        #         record[keys[cnt]] = item
+        #         cnt += 1
+        #     # å°†å­—å…¸å­˜å…¥åˆ—è¡¨
+        #     result.append(record)
+# å»ç©º
 
-    # ¶ÁÈ¡µÚÒ»¸ö¹¤×÷±í
-    table = data.sheets()[0]
-
-    # Í³¼ÆĞĞÊı
-    rows = table.nrows
-
-    data = []   # ´æ·ÅÊı¾İ
-    for v in range(1, rows):
-        values = table.row_values(v)
-        data.append(
-            (
-                {
-                str(values[0]): str(values[1:])
-                }
-            )
-     )
-
-
-    return data
-
-
+def not_empty(s):
+    return s and s.strip()
 
 if __name__ == '__main__':
 
-    d1 = read_xls("./Ä£ĞÍÀà-2.xlsx")
-    d2 = str(d1).replace("\'", "\"")    # ×ÖµäÖĞµÄÊı¾İ¶¼ÊÇµ¥ÒıºÅ£¬µ«ÊÇ±ê×¼µÄjsonĞèÒªË«ÒıºÅ
-
-    # d3 = str(d2).replace("''","")
-    print(d2)
-
-    d2 = "{\"DeviceList\":" + d2 + "}"    # Ç°ÃæµÄÊı¾İÖ»ÊÇÊı×é£¬¼ÓÉÏÍâÃæµÄjson¸ñÊ½´óÀ¨ºÅ
-
-    # ¿É¶Á¿ÉĞ´£¬Èç¹û²»´æÔÚÔò´´½¨£¬Èç¹ûÓĞÄÚÈİÔò¸²¸Ç
-    jsFile = open("./DevicesInfo.js", "w+", encoding='utf-8')
-    jsFile.write(d2)
+    d1 = str(read_xls("./æµ‹è¯•.xlsx"))
+        # for key, value in i.items():
+        #     print(key, value)
+    # for i in range(len(d1)):
+    #print([item[key] for item in d1 for key in item] )
+    print(d1)
+    # å¯è¯»å¯å†™ï¼Œå¦‚æœä¸å­˜åœ¨åˆ™åˆ›å»ºï¼Œå¦‚æœæœ‰å†…å®¹åˆ™è¦†ç›–
+    jsFile = open("./11.xml", "w+", encoding='utf-8')
+    jsFile.write(d1)
     jsFile.close()
