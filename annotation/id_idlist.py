@@ -17,13 +17,14 @@ def read_xls(filename):
             if j != '':
                 ls.append(j)
         dc.extend(ls)
+    print(len(dc))
     print(dc)
     return dc
 
 
 if __name__ == '__main__':
 
-    d1 = str(read_xls("类iid.xls"))
+    d1 = str(read_xls("找到所有类id.xls"))
     # print(d1)
     # 可读可写，如果不存在则创建，如果有内容则覆盖
     jsFile = open("./excel_json.xml", "w+", encoding='utf-8')
